@@ -53,15 +53,12 @@ definePageMeta({
 })
 
 const route = useRoute()
-// PERBAIKAN 1: Gunakan .slug karena nama file adalah [slug].vue
-const articleSlug = route.params.slug
+const articleSlug = route.params.slug as string
 
-const { data: article, status } = await useAsyncData(`article-detail-${articleSlug}`, async () => {
+// Menggunakan global fetch bawaan Nuxt untuk memotong bypass auth header token
+const { data: article, status } = await useAsyncData(`direct-detail-${articleSlug}`, async () => {
   try {
-    // PERBAIKAN 2: Tambahkan /public/ pada URL API agar bisa diakses tanpa login
     const response = await $fetch<any>(`http://localhost:8000/api/public/articles/${articleSlug}`)
-    
-    // Sesuaikan dengan struktur data dari Laravel (biasanya dibungkus dalam properti 'data')
     const data = response?.data ? response.data : response
     
     if (!data) return null

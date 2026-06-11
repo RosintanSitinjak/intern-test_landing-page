@@ -78,7 +78,7 @@ const { apiFetch, unwrap } = useApi()
 
 const { data: articles, status } = await useAsyncData('public-articles', async () => {
   try {
-    const response = await apiFetch<any>('/articles')
+    const response = await apiFetch<any>('/public/articles')
     const rawData = unwrap(response)
     
     const articlesArray = rawData?.data || rawData || []
@@ -96,6 +96,7 @@ const { data: articles, status } = await useAsyncData('public-articles', async (
   
       return {
         id: item.id,
+        slug: item.slug,
         title: item.title,
         description: item.description,
         author: item.author,
